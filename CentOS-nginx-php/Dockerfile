@@ -15,10 +15,11 @@ RUN chmod +x /run.sh
 RUN sed -ie 's/apache/nginx/g' /etc/php-fpm.d/www.conf
 
 RUN mkdir -p /var/www/html
+COPY config/html /var/www/html
 RUN chown -R nginx.nginx /var/www/html
 # Match user id with running system for php-fpm.
 
-VOLUME ["/var/www/html"]
+#VOLUME ["/var/www/html"]
 
 EXPOSE 80
 ENTRYPOINT /run.sh

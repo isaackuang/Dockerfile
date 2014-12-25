@@ -5,8 +5,8 @@ RUN yum install epel-release -y
 RUN yum update -y && yum install nginx php-fpm php-mysql -y
 #RUN mkdir /var/wwwlogs
 # Copy the original settigs. Note that the files must be inside the build directory.
-COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY config/sites-enabled /etc/nginx/sites-enabled
+#COPY config/nginx.conf /etc/nginx/nginx.conf
+#COPY config/sites-enabled /etc/nginx/sites-enabled
 #COPY sites-available /etc/nginx/sites-available
 #COPY conf.d /etc/nginx/conf.d
 ADD run.sh /run.sh
@@ -19,7 +19,7 @@ COPY config/html /var/www/html
 RUN chown -R nginx.nginx /var/www/html
 # Match user id with running system for php-fpm.
 
-#VOLUME ["/var/www/html"]
+VOLUME ["/usr/share/nginx/html"]
 
 EXPOSE 80
 ENTRYPOINT /run.sh

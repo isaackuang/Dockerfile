@@ -1,0 +1,43 @@
+server {
+    listen         80 default_server;
+    server_name    localhost;
+    server_tokens  off;
+    access_log     /var/log/nginx/default.access.log;
+    root           /var/www/html;
+    deny all;
+    location / {
+        index       index.php;
+        add_header  X-Content-Type-Options "nosniff";
+        add_header  X-XSS-Protection "1; mode=block";
+        if (!-f $request_filename) {
+            rewrite ^(.*)$ index.php last;
+        }
+    }
+
+    location ~ .php$ {
+  internal;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        include        /etc/nginx/fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME  $document_root/$fastcgi_script_name;
+        fastcgi_param  REMOTE_ADDR  $http_x_real_ip;
+    }
+
+    location ~ .(js|ico|gif|jpg|png|css|phtml)$ {
+        add_header     X-Content-Type-Options "nosniff";
+        add_header     X-XSS-Protection "1; mode=block";
+        access_log     off;
+        log_not_found  off;
+    }
+
+    location = /favicon.ico {
+        access_log     off;
+        log_not_found  off;
+    }
+
+    location ~ /. {
+        access_log     off;
+        log_not_found  off;
+        deny           all;
+    }
+}

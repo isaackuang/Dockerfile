@@ -14,9 +14,9 @@ RUN chmod +x /run.sh
 # Do not start nginx as daemon.
 RUN sed -ie 's/apache/nginx/g' /etc/php-fpm.d/www.conf
 
-RUN mkdir -p /var/www/html
-COPY config/html /var/www/html
-RUN chown -R nginx.nginx /var/www/html
+#RUN mkdir -p /var/www/html
+#COPY config/html /var/www/html
+#RUN chown -R nginx.nginx /var/www/html
 # Match user id with running system for php-fpm.
 
 VOLUME ["/usr/share/nginx/html"]

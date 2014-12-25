@@ -38,6 +38,6 @@ server {
     location ~ /\. {
         access_log     off;
         log_not_found  off;
-        deny           all;
+        #deny           all;
     }
 }

@@ -4,7 +4,6 @@ server {
     server_tokens  off;
     access_log     /var/log/nginx/default.access.log;
     root           /var/www/html;
-    deny all;
     location / {
         index       index.php;
         add_header  X-Content-Type-Options "nosniff";

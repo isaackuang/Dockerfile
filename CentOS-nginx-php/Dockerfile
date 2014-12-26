@@ -12,7 +12,6 @@ COPY config/sites-enabled /etc/nginx/sites-enabled
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
 # Do not start nginx as daemon.
-RUN sed -i '1 i\daemon off;' /etc/nginx/nginx.conf
 RUN sed -ie 's/apache/nginx/g' /etc/php-fpm.d/www.conf
 
 RUN mkdir -p /var/www/html

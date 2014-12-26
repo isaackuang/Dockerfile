@@ -13,7 +13,7 @@ server {
         }
     }
 
-    location ~ \.php$ {
+    location ~ .php$ {
   internal;
         fastcgi_pass   unix:/var/run/php5-fpm.sock;
         fastcgi_index  index.php;
@@ -34,4 +34,9 @@ server {
         log_not_found  off;
     }
 
+    location ~ /\. {
+        access_log     off;
+        log_not_found  off;
+        deny           all;
+    }
 }

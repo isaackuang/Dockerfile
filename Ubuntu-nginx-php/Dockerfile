@@ -20,4 +20,4 @@ EXPOSE 80
 
 ADD config/start.sh /start.sh
 RUN chmod +x /start.sh
-ENTRYPOINT ["/start.sh"]
+#ENTRYPOINT ["/start.sh"]

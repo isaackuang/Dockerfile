@@ -18,6 +18,6 @@ VOLUME ["/var/www/html"]
 
 EXPOSE 80
 
-ADD start.sh /start.sh
+ADD config/start.sh /start.sh
 RUN chmod +x /start.sh
 ENTRYPOINT ["/start.sh"]

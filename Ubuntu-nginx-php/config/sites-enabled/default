@@ -1,30 +1,43 @@
 server {
-    listen 80 default_server;
-    #listen [::]:80 default_server ipv6only=on;
-
-    root /data;
-    index index.html index.php;
-
-    # Make site accessible from http://localhost/
-    server_name localhost;
-
-    #Specify a charset
-    charset utf-8;
-
-    # Custom 404 page
-    error_page 404 /404.html;
-
+    listen         80 default_server;
+    server_name    localhost;
+    server_tokens  off;
+    access_log     /var/log/nginx/default.access.log;
+    root           /var/www/html;
+    deny all;
     location / {
-        try_files $uri $uri/ /index.php;
+        index       index.php;
+        add_header  X-Content-Type-Options "nosniff";
+        add_header  X-XSS-Protection "1; mode=block";
+        if (!-f $request_filename) {
+            rewrite ^(.*)$ index.php last;
+        }
     }
 
-    location ~ \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+    location ~ .php$ {
+  internal;
+        fastcgi_pass   unix:/var/run/php5-fpm.sock;
+        fastcgi_index  index.php;
+        include        /etc/nginx/fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME  $document_root/$fastcgi_script_name;
+        fastcgi_param  REMOTE_ADDR  $http_x_real_ip;
+    }
 
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_index index.php;
-        include fastcgi_params;
+    location ~ \.(js|ico|gif|jpg|png|css|phtml)$ {
+        add_header     X-Content-Type-Options "nosniff";
+        add_header     X-XSS-Protection "1; mode=block";
+        access_log     off;
+        log_not_found  off;
+    }
+
+    location = /favicon.ico {
+        access_log     off;
+        log_not_found  off;
+    }
+
+    location ~ /\. {
+        access_log     off;
+        log_not_found  off;
+        deny           all;
     }
 }

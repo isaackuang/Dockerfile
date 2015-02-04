@@ -13,7 +13,7 @@ ADD run.sh /run.sh
 RUN chmod +x /run.sh
 # Do not start nginx as daemon.
 RUN sed -ie 's/apache/nginx/g' /etc/php-fpm.d/www.conf
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
 RUN mkdir -p /var/www/html
